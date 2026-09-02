@@ -42,6 +42,9 @@ class Program
         // Create a string array with the lines of text
         string[] lines = { "First line", "Second line", "Third line" };
 
+        // Guardamos una persona
+        Persona unaPersona = new Persona(1, "Juan", "Perez", 12345678);
+
         // Set a variable to the Documents path.
         string docPath =
           Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -52,14 +55,16 @@ class Program
         // Write the string array to a new file named "WriteLines.txt".
         using (StreamWriter outputFile = new StreamWriter(docPath))
         {
-            foreach (string line in lines)
-                outputFile.WriteLine(line);
+            // foreach (string line in lines)
+            //     outputFile.WriteLine(line);
+            // Agregamos la persona al archivo
+             outputFile.WriteLine(unaPersona.ToString());
         }
         Console.WriteLine("Archivo creado con éxito.");
 
         // Contenido nuevo
-        string contenido = "Cuarta línea";
-        agregarContenido(docPath, contenido);
+        // string contenido = "Cuarta línea";
+        // agregarContenido(docPath, contenido);
 
         Console.WriteLine("Contenido agregado con éxito.");
 
