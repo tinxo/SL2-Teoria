@@ -39,38 +39,37 @@ class Program
     {
         Console.WriteLine("Ejemplo de persistencia con archivos");
 
-        // Create a string array with the lines of text
-        string[] lines = { "First line", "Second line", "Third line" };
-
         // Guardamos una persona
-        Persona unaPersona = new Persona(1, "Juan", "Perez", 12345678);
+        Persona persona1 = new Persona(1, "Juan", "Perez", "12345678");
+        Persona persona2 = new Persona(2, "María", "Perez", "23456781");
+        Persona persona3 = new Persona(3, "Pedro", "Perez", "34567812");
 
         // Set a variable to the Documents path.
         string docPath =
           Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        docPath = Path.Combine(docPath, "ejemplo.txt");
+        docPath = Path.Combine(docPath, "datosSL2/datos.txt");
 
-        Console.WriteLine($"Ruta de escritura: {docPath}");
+        PersonaService personaService = new PersonaService(docPath);
 
-        // Write the string array to a new file named "WriteLines.txt".
-        using (StreamWriter outputFile = new StreamWriter(docPath))
+        // Create
+        personaService.Crear(persona1);
+        personaService.Crear(persona2);
+        personaService.Crear(persona3);
+
+        Console.WriteLine($"Se escribieron los datos en: {docPath}");
+
+        // Read
+        List<Persona> personas = personaService.ObtenerTodas();
+        Console.WriteLine("Personas leídas del archivo:");
+        foreach (var persona in personas)
         {
-            // foreach (string line in lines)
-            //     outputFile.WriteLine(line);
-            // Agregamos la persona al archivo
-             outputFile.WriteLine(unaPersona.ToString());
+            Console.WriteLine($"Apellido: {persona.Apellido}, Nombre: {persona.Nombre}, Documento: {persona.NroDocumento}");
         }
-        Console.WriteLine("Archivo creado con éxito.");
 
-        // Contenido nuevo
-        // string contenido = "Cuarta línea";
-        // agregarContenido(docPath, contenido);
+        // TODO: acá viene la parte donde me lista las personas cargadas y me permite elegir una para modificarla
+        //      esa instancia se modifica (algún campo, excepto el ID) y se vuelve a escribir el archivo
 
-        Console.WriteLine("Contenido agregado con éxito.");
+        // TODO: se hace lo mismo pero para eliminar una persona del archivo
 
-
-        // Ahora probamos leer el contenido completo
-        string contenidoArchivo = leerArchivo(docPath);
-        Console.WriteLine($"Contenido del archivo: {contenidoArchivo}");
-}
+    }
 }
