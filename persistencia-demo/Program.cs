@@ -1,39 +1,10 @@
 ﻿// Ejemplo de la documentación
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 class Program
-{
-
-    static string leerArchivo(string path)
-    {
-        try
-        {
-            // Open the text file using a stream reader.
-            using StreamReader reader = new(path);
-
-            // Read the stream as a string.
-            string text = reader.ReadToEnd();
-
-            // Devuelve el contenido del archivo
-            return text;
-        }
-        catch (IOException e)
-        {
-            Console.WriteLine("The file could not be read:");
-            Console.WriteLine(e.Message);
-        }
-        return string.Empty;
-    }
-
-    static void agregarContenido(string path, string contenido)
-    {
-        // Se instancia el writer para agregar contenido al archivo
-        using (StreamWriter outputFile = new StreamWriter(path, true))
-        {
-            outputFile.WriteLine(contenido);
-        }
-    }
+{   
 
     static void Main(string[] args)
     {
@@ -52,9 +23,9 @@ class Program
         PersonaService personaService = new PersonaService(docPath);
 
         // Create
-        personaService.Crear(persona1);
-        personaService.Crear(persona2);
-        personaService.Crear(persona3);
+        // personaService.Crear(persona1);
+        // personaService.Crear(persona2);
+        // personaService.Crear(persona3);
 
         Console.WriteLine($"Se escribieron los datos en: {docPath}");
 
@@ -66,10 +37,38 @@ class Program
             Console.WriteLine($"Apellido: {persona.Apellido}, Nombre: {persona.Nombre}, Documento: {persona.NroDocumento}");
         }
 
-        // TODO: acá viene la parte donde me lista las personas cargadas y me permite elegir una para modificarla
-        //      esa instancia se modifica (algún campo, excepto el ID) y se vuelve a escribir el archivo
-
-        // TODO: se hace lo mismo pero para eliminar una persona del archivo
+        //Update
+        int idToUpdate = 2;
+        Persona personaToUpdate = personaService.ObtenerPorId(idToUpdate);
+        if (personaToUpdate != null)
+        {
+            personaToUpdate.Nombre = "María Actualizada";
+            var (resultado, mensaje) = personaService.Actualizar(personaToUpdate);
+            if (resultado)
+            {
+                Console.WriteLine($"Operación correcta. {mensaje}");
+            }
+            else
+            {
+                Console.WriteLine($"Error al actualizar: {mensaje}");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Persona con ID {idToUpdate} no encontrada.");
+        }
+        
+        // Eliminar
+        int idToDelete = 3;
+        var (result, message) = personaService.Eliminar(idToDelete);
+        if (result)
+        {
+            Console.WriteLine($"Operación correcta. {message}");
+        }
+        else
+        {
+            Console.WriteLine($"Error al eliminar: {message}");
+        }
 
     }
 }

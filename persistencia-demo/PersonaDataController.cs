@@ -46,4 +46,15 @@ class PersonaDataController
         return personas;
     }
 
+    public void GuardarPersonas(List<Persona> personas)
+    {
+        using (StreamWriter outputFile = new StreamWriter(filePath, false))
+        {
+            foreach (var persona in personas)
+            {
+                outputFile.WriteLine(persona.ToString());
+            }
+        }
+    }
+
 }
