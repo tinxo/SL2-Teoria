@@ -79,10 +79,62 @@ Además, se deja planteado el uso de `ToString()` y `FromString()` para persisti
 > [!TIP]
 > La idea de esta clase fue dejar una base ordenada para seguir avanzando, pero quedan tareas pendientes.
 
-- [ ] Agregar un método para modificar una persona existente
-- [ ] Agregar un método para eliminar una persona del archivo
-- [ ] Controlar si se quiere agregar contenido o sobrescribir el archivo
-- [ ] Validar campos antes de guardar
+- [x] Agregar un método para modificar una persona existente
+- [x] Agregar un método para eliminar una persona del archivo
+- [x] Controlar si se quiere agregar contenido o sobrescribir el archivo
+- [x] Validar campos antes de guardar
 - [ ] Mejorar la serialización para evitar errores si el archivo tiene líneas vacías o formatos inválidos
 - [ ] Revisar y limpiar la estructura para que el ejemplo quede más elegante y consistente
+
+## Clase 3 - 16/09/2026
+
+En esta clase se consolidó la lógica de negocio y se mejoró la experiencia de uso del demo, con un enfoque más práctico en la consola.
+
+### Cambios realizados
+
+Se agregaron funcionalidades que permiten trabajar con la lista de personas de forma más realista:
+
+- validación para no duplicar personas por número de documento
+- posibilidad de crear el archivo con datos de ejemplo si no existe
+- opción de carga manual si el usuario no quiere usar los ejemplos
+- consulta de una persona por su `Id`
+- actualización de una persona existente
+- eliminación de una persona por `Id`
+- reescritura completa del archivo cuando se modifica la colección de personas
+
+### Ajustes importantes del código
+
+- `PersonaService.Crear(Persona persona)` ahora devuelve un resultado con `exito` y `mensaje`.
+- `PersonaService.Actualizar(Persona persona)` reemplaza la persona encontrada y guarda la lista completa nuevamente.
+- `PersonaService.Eliminar(int id)` elimina la persona seleccionada y vuelve a persistir el archivo.
+- `PersonaDataController.GuardarPersonas(List<Persona> personas)` reemplaza el contenido del archivo con la lista actualizada.
+- `Program` incorpora la lógica para:
+  - detectar si el archivo existe
+  - decidir si cargar personas de ejemplo o manualmente
+  - listar el contenido
+  - actualizar y borrar registros desde consola
+
+### Flujo de la aplicación en esta clase
+
+1. Se verifica si el archivo ya existe.
+2. Si no existe, se ofrece generar ejemplo o cargar manualmente.
+3. El usuario puede crear nuevas personas.
+4. Se lista el contenido del archivo.
+5. Se actualiza una persona por `Id`.
+6. Se elimina otra persona por `Id`.
+7. El archivo queda nuevamente persistido con el estado actual.
+
+### Estado final de la demo
+
+> [!SUCCESS]
+> La aplicación quedó funcionando como una pequeña práctica completa de CRUD básico sobre un archivo de texto, manteniendo la separación por capas y dejando la base para una próxima mejora de validaciones y limpieza del código.
+
+- [x] Crear personas
+- [x] Leer personas
+- [x] Actualizar personas
+- [x] Eliminar personas
+- [x] Validar duplicados por documento
+- [x] Manejar archivo existente o inexistente
+- [ ] Mejorar la serialización ante líneas vacías o formatos inválidos
+- [ ] Dejar la estructura aún más limpia y extensible
 

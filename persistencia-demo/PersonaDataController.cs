@@ -13,11 +13,20 @@ class PersonaDataController
         this.filePath = filePath;
     }
 
-    public void AgregarPersona(Persona persona)
+    public bool AgregarPersona(Persona persona)
     {
-        using (StreamWriter outputFile = new StreamWriter(filePath, true))
+        // Se mejora la lógica para manejar excepciones y asegurar que el archivo se cierre correctamente.
+        try
         {
-            outputFile.WriteLine(persona.ToString());
+            using (StreamWriter outputFile = new StreamWriter(filePath, true))
+            {
+                outputFile.WriteLine(persona.ToString());
+            }
+            return true;
+        }
+        catch (IOException)
+        {
+            return false;
         }
     }
 

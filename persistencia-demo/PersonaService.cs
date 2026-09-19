@@ -14,9 +14,21 @@ class PersonaService
         dataController = new PersonaDataController(filePath);
     }
 
-    public void Crear(Persona persona)
+    public (bool exito, string mensaje) Crear(Persona persona)
     {
-        dataController.AgregarPersona(persona);
+        // Se verifica si ya existe una persona con el mismo número de documento antes de agregarla.
+        List<Persona> personas = dataController.LeerPersonas();
+
+        if (personas.Any(p => p.NroDocumento == persona.NroDocumento))
+            return (false, "Ya existe una persona con ese número de documento.");
+
+        // Se hace la llamada al método AgregarPersona del controlador de datos para persistir la nueva persona.
+        bool exito = dataController.AgregarPersona(persona);
+        // Se suma el control de resultados de la capa de persistencia para informar al usuario si la operación fue exitosa o no.
+        if (!exito)
+            return (false, "No se pudo escribir en el archivo.");
+        else
+            return (true, $"Persona con ID {persona.Id} creada.");
     }
 
     public List<Persona> ObtenerTodas()
