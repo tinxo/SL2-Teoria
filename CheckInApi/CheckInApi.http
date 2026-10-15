@@ -1,0 +1,44 @@
+@CheckInApi_HostAddress = http://localhost:5129
+@documento = 12345678
+
+# Obtener todos los pasajeros
+GET {{CheckInApi_HostAddress}}/api/Pasajero
+Accept: application/json
+
+###
+
+# Obtener un pasajero por documento
+GET {{CheckInApi_HostAddress}}/api/Pasajero/{{documento}}
+Accept: application/json
+
+###
+
+# Agregar un pasajero
+POST {{CheckInApi_HostAddress}}/api/Pasajero
+Content-Type: application/json
+
+{
+  "nombre": "Ada",
+  "apellido": "Lovelace",
+  "documento": "{{documento}}",
+  "pasajeroFrecuente": "true"
+}
+
+###
+
+# Actualizar un pasajero existente (el documento debe existir)
+PUT {{CheckInApi_HostAddress}}/api/Pasajero
+Content-Type: application/json
+
+{
+  "nombre": "Ada",
+  "apellido": "Byron",
+  "documento": "{{documento}}",
+  "pasajeroFrecuente": "true"
+}
+
+###
+
+# Eliminar un pasajero por documento
+DELETE {{CheckInApi_HostAddress}}/api/Pasajero/{{documento}}
+Accept: application/json
