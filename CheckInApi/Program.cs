@@ -8,6 +8,7 @@ builder.Services.AddControllers();
 string path = Path.Combine(AppContext.BaseDirectory, "pasajeros.txt");
 builder.Services.AddScoped<IPasajeroRepository>(provider => new PasajeroRepositoryArchivo(path));
 builder.Services.AddScoped<PasajeroService>();
+builder.Services.AddScoped<CheckInService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

@@ -14,7 +14,6 @@ namespace CheckInApi.Modelos
         private string _pasajeroFrecuente;
         private List<Equipaje> _equipajes = new List<Equipaje>();
 
-
         // Definición del constructor
         public Pasajero(string nombre, 
             string apellido, 
@@ -43,7 +42,9 @@ namespace CheckInApi.Modelos
         }
 
         // Definición de propiedades
-      
+
+         public Pasaje? Pasaje { get; set; }
+
         public int Id { get; set; }
 
         public string Nombre
@@ -91,14 +92,20 @@ namespace CheckInApi.Modelos
 
         public override string ToString()
         {
-            return $"{Id}|{Nombre}|{Apellido}|{Documento}|{PasajeroFrecuente}";
+            return $"{Id}|{Nombre}|{Apellido}|{Documento}|{PasajeroFrecuente}" +
+                   $"|{Pasaje?.TipoVuelo}|{Pasaje?.TipoTarifa}|{Pasaje?.NroVuelo}";
         }
 
         public static Pasajero FromString(string linea)
         {
             string[] partes = linea.Split('|');
             int id = int.Parse(partes[0]);
-            return new Pasajero(partes[1], partes[2], partes[3], partes[4], id);
+            Pasajero pasajero = new Pasajero(partes[1], partes[2], partes[3], partes[4], id);
+            if (partes.Length > 5 && !string.IsNullOrWhiteSpace(partes[5]) && !string.IsNullOrWhiteSpace(partes[6]) && !string.IsNullOrWhiteSpace(partes[7]))
+            {
+                pasajero.Pasaje = new Pasaje(partes[5], partes[6], partes[7]);
+            }
+            return pasajero;
         }
 
         }
