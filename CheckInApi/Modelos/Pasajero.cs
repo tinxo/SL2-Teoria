@@ -19,8 +19,15 @@ namespace CheckInApi.Modelos
         public Pasajero(string nombre, 
             string apellido, 
             string documento, 
-            string pasajeroFrecuente)
+            string pasajeroFrecuente,
+            int id = 0)
         {
+            if (string.IsNullOrWhiteSpace(documento))
+            {
+                throw new DatosInvalidosException(
+                    "Documento", "El documento no puede estar vacío."
+                    );
+            }
             if (string.IsNullOrWhiteSpace(nombre))
             {
                 // lanzar exception para datos invalidos
@@ -28,6 +35,7 @@ namespace CheckInApi.Modelos
                     "Nombre", "El nombre no puede estar vacío."
                     );
             }
+            Id = id;
             _nombre = nombre;
             _apellido = apellido;
             _documento = documento;
@@ -35,6 +43,9 @@ namespace CheckInApi.Modelos
         }
 
         // Definición de propiedades
+      
+        public int Id { get; set; }
+
         public string Nombre
         {
             get { return _nombre; }
@@ -56,9 +67,17 @@ namespace CheckInApi.Modelos
             }
         }
 
-        public string Documento { get; set; }
+        public string Documento
+        {
+            get { return _documento; }
+            set { _documento = value; }
+        }
 
-        public string PasajeroFrecuente { get; set; }
+        public string PasajeroFrecuente
+        {
+            get { return _pasajeroFrecuente; }
+            set { _pasajeroFrecuente = value; }
+        }
 
         public List<Equipaje> getEquipajes()
         {
@@ -72,13 +91,14 @@ namespace CheckInApi.Modelos
 
         public override string ToString()
         {
-            return $"{Nombre}|{Apellido}|{Documento}|{PasajeroFrecuente}";
+            return $"{Id}|{Nombre}|{Apellido}|{Documento}|{PasajeroFrecuente}";
         }
 
         public static Pasajero FromString(string linea)
         {
             string[] partes = linea.Split('|');
-            return new Pasajero(partes[0], partes[1], partes[2], partes[3]);
+            int id = int.Parse(partes[0]);
+            return new Pasajero(partes[1], partes[2], partes[3], partes[4], id);
         }
 
         }

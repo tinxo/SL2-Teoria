@@ -14,7 +14,7 @@ namespace CheckInApi.Modelos.Exceptions
         public string Campo {  get; }
         public string Error {  get; }
         public DatosInvalidosException(string campo, string error)
-            : base($"El campo {campo} tiene un error: ")
+            : base($"El campo {campo} tiene un error: {error}")
         {
             Campo = campo;
             Error = error;

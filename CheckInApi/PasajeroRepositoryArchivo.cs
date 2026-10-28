@@ -43,6 +43,16 @@ public class PasajeroRepositoryArchivo : IPasajeroRepository
         {
             try
             {
+                List<Pasajero> existentes = ObtenerTodos();
+                if (existentes.Count > 0)
+                {
+                    pasajero.Id = existentes.Max(p => p.Id) + 1; // Asignar un nuevo Id
+                }
+                else
+                {
+                    pasajero.Id = 1; // Primer pasajero, asignar Id 1
+                }
+                
                 using (StreamWriter sw = new StreamWriter(path, true))
                 {
                     sw.WriteLine(pasajero.ToString());
@@ -58,8 +68,8 @@ public class PasajeroRepositoryArchivo : IPasajeroRepository
 
         public bool Actualizar(Pasajero pasajero)
         {
-            var pasajeros = ObtenerTodos();
-            var index = pasajeros.FindIndex(p => p.Documento == pasajero.Documento);
+            List<Pasajero> pasajeros = ObtenerTodos();
+            var index = pasajeros.FindIndex(p => p.Id == pasajero.Id);
             if (index < 0)
             {
                 return false; // No se encontró el pasajero a actualizar
@@ -68,15 +78,15 @@ public class PasajeroRepositoryArchivo : IPasajeroRepository
             return GuardarTodos(pasajeros);;
         }
 
-        public bool Eliminar(string documento)
+        public bool Eliminar(int id)
         {
             var pasajeros = ObtenerTodos();
-            var pasajeroAEliminar = pasajeros.FirstOrDefault(p => p.Documento == documento);
+            var pasajeroAEliminar = pasajeros.FirstOrDefault(p => p.Id == id);
             if (pasajeroAEliminar == null)
             {
                 return false; // No se encontró el pasajero a eliminar
             }
-            pasajeros.RemoveAll(p => p.Documento == documento);
+            pasajeros.RemoveAll(p => p.Id == id);
             return GuardarTodos(pasajeros);
         }
 
@@ -98,6 +108,11 @@ public class PasajeroRepositoryArchivo : IPasajeroRepository
                 // Manejo de excepciones, por ejemplo, loguear el error
                 return false;
             }
+        }
+
+        public Pasajero? ObtenerPorId(int Id)
+        {
+            return ObtenerTodos().FirstOrDefault(p => p.Id == Id);
         }
 
     }

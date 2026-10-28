@@ -21,23 +21,22 @@ public class PasajeroService
         return repositorio.ObtenerPorDocumento(documento);
     }
 
+    public Pasajero? ObtenerPorId(int id)
+    {
+        return repositorio.ObtenerPorId(id);
+    }
+
     public (bool exito, string mensaje) Agregar(PasajeroRequest pasajero)
     {
         string documento = pasajero.Documento ?? string.Empty;
-
-        if (repositorio.ObtenerPorDocumento(pasajero.Documento) != null)
-        {
-            // logica de control de duplicados x documento
-            return (false, "Ya existe un pasajero con el mismo documento.");
-        }
-
+        // Se valida que el documento no esté vacío al crear
         Pasajero nuevoPasajero;
         try
         {
             nuevoPasajero = new Pasajero(
                 pasajero.Nombre ?? string.Empty,
                 pasajero.Apellido ?? string.Empty,
-                pasajero.Documento ?? string.Empty,
+                documento,
                 pasajero.PasajeroFrecuente ?? string.Empty
             );
         }
@@ -45,6 +44,14 @@ public class PasajeroService
         {
             return (false, $"Error al crear el pasajero: {ex.Message}");
         };
+
+        // Validación para evitar duplicados por documento
+        if (repositorio.ObtenerPorDocumento(documento) != null)
+        {
+            // logica de control de duplicados x documento
+            return (false, "Ya existe un pasajero con el mismo documento.");
+        }
+
         bool exito = repositorio.Agregar(nuevoPasajero);
         if (!exito)
         {
@@ -53,11 +60,11 @@ public class PasajeroService
         return (true, "Pasajero agregado exitosamente.");
     }
 
-    public (bool exito, string mensaje) Actualizar(PasajeroRequest pasajero)
+    public (bool exito, string mensaje) Actualizar(int Id, PasajeroRequest pasajero)
     {
         string documento = pasajero.Documento ?? string.Empty;
-        
-        if (repositorio.ObtenerPorDocumento(pasajero.Documento) == null)
+        Pasajero? pasajeroExistente = repositorio.ObtenerPorDocumento(documento);
+        if (pasajeroExistente == null && pasajeroExistente?.Id != Id)
         {
             return (false, "No existe un pasajero con el documento proporcionado.");
         }
@@ -69,7 +76,8 @@ public class PasajeroService
                 pasajero.Nombre ?? string.Empty,
                 pasajero.Apellido ?? string.Empty,
                 pasajero.Documento ?? string.Empty,
-                pasajero.PasajeroFrecuente ?? string.Empty
+                pasajero.PasajeroFrecuente ?? string.Empty,
+                Id
             );
         }
         catch (DatosInvalidosException ex)
@@ -84,14 +92,14 @@ public class PasajeroService
         return (true, "Pasajero actualizado exitosamente.");
     }
 
-    public (bool exito, string mensaje) Eliminar(string documento)
+    public (bool exito, string mensaje) Eliminar(int id)
     {
-        if (repositorio.ObtenerPorDocumento(documento) == null)
+        if (repositorio.ObtenerPorId(id) == null)
         {
-            return (false, "No existe un pasajero con el documento proporcionado.");
+            return (false, "No existe un pasajero con el ID proporcionado.");
         }
 
-        bool exito = repositorio.Eliminar(documento);
+        bool exito = repositorio.Eliminar(id);
         if (!exito)
         {
             return (false, "Error al eliminar el pasajero del repositorio.");
