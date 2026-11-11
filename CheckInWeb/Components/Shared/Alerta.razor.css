@@ -1,0 +1,24 @@
+.alerta {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radio);
+    border: 1px solid;
+    margin-bottom: 1rem;
+}
+
+.alerta-info {
+    background: #e6f1f1;
+    border-color: #a9cfd0;
+    color: #0b4f51;
+}
+
+.alerta-exito {
+    background: #e7f4e8;
+    border-color: #a8d3ab;
+    color: #1d5a22;
+}
+
+.alerta-error {
+    background: #fbe9e7;
+    border-color: #efb4ad;
+    color: #8c1d14;
+}

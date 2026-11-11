@@ -1,0 +1,18 @@
+<div class="alerta @Clase" role="@(Tipo == TipoAlerta.Error ? "alert" : "status")">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public TipoAlerta Tipo { get; set; } = TipoAlerta.Info;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private string Clase => Tipo switch
+    {
+        TipoAlerta.Exito => "alerta-exito",
+        TipoAlerta.Error => "alerta-error",
+        _ => "alerta-info"
+    };
+}

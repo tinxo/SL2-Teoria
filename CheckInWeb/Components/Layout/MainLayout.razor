@@ -1,9 +1,21 @@
 ﻿@inherits LayoutComponentBase
+<div class="app">
+    <header class="encabezado">
+        <a class="marca" href="/"><span class="marca-icono" aria-hidden="true"></span><span class="marca-texto">App CheckIn</span></a>
+        <NavMenu />
+    </header>
 
-@Body
+    <main class="contenido">
+        @Body
+    </main> 
+
+    <footer class="pie">© 2023 App CheckIn. Todos los derechos reservados.</footer>
+
+</div>
+
 
 <div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
+    Ocurrió un error inesperado.
+    <a href="." class="reload">Recargar</a>
     <span class="dismiss">🗙</span>
 </div>

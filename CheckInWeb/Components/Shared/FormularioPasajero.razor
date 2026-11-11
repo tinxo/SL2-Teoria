@@ -1,0 +1,58 @@
+<EditForm Model="Datos" OnInvalidSubmit="Enviar" class="formulario">
+     <DataAnnotationsValidator />
+ 
+     <div class="campo">
+         <label for="nombre">Nombre</label>
+         <InputText id="nombre" @bind-Value="Datos.Nombre"/>
+         <ValidationMessage For="() => Datos.Nombre" />
+     </div>
+ 
+     <div class="campo">
+         <label for="apellido">Apellido</label>
+         <InputText id="apellido" @bind-Value="Datos.Apellido" />
+         <ValidationMessage For="() =>  Datos.Apellido" />
+     </div>
+
+    <div class="campo">
+        <label for="documento">Nro. de documento</label>
+        <InputText id="documento" @bind-Value="Datos.Documento" disabled="@DocumentoBloqueado" />
+        <ValidationMessage For="() => Datos.Documento" />
+    </div>
+
+    <div class="campo">
+        <label for="frecuente">Nro. de pasajero frecuente</label>
+        <InputText id="frecuente" @bind-Value="Datos.PasajeroFrecuente"/>
+    </div>
+ 
+     <div class="fila-acciones">
+        <button type="submit" class="btn btn-primario" disabled="@Guardando">
+            @(Guardando ? "Guardando…" : TextoBoton)
+        </button>
+        @if (AlCancelar.HasDelegate)
+        {
+            <button type="button" class="btn" @onclick="AlCancelar" disabled="@Guardando">Cancelar</button>
+        }
+    </div>
+ </EditForm>
+
+ @code {
+        [Parameter, EditorRequired]
+        public DatosPasajero Datos { get; set; }
+    
+        [Parameter]
+        public bool DocumentoBloqueado { get; set; } = false;
+    
+        [Parameter]
+        public bool Guardando { get; set; } = false;
+
+        [Parameter]
+        public string TextoBoton { get; set; } = "Guardar";
+    
+        [Parameter]
+        public EventCallback AlGuardar { get; set; }
+
+        [Parameter]
+        public EventCallback AlCancelar { get; set; }
+
+        private Task Enviar() => AlGuardar.InvokeAsync();
+ }

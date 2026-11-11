@@ -1,0 +1,25 @@
+.menu {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+/* NavLink es un componente: ::deep permite estilizar el <a> que genera */
+.menu ::deep .menu-link {
+    color: #c9d3e0;
+    text-decoration: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+}
+
+.menu ::deep .menu-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* NavLink agrega la clase "active" al enlace de la página actual */
+.menu ::deep .menu-link.active {
+    background: var(--color-primario);
+    color: #fff;
+}
